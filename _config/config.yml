@@ -1,0 +1,21 @@
+---
+Name: headlessconfig
+---
+Chtombleson\SSHeadless\Extension\DataObject:
+  default_json_fields:
+    - column: ID
+      key: id
+    - column: GUID
+      key: guid
+    - column: ClassName
+      key: class_name
+    - column: Created
+      key: created_at
+    - column: LastEdited
+      key: updated_at
+
+Chtombleson\SSHeadless\Output\Factory:
+  writer: Chtombleson\SSHeadless\Output\Writer\Filesystem
+
+Chtombleson\SSHeadless\Output\Writer\Filesystem:
+  output_dir: public/assets/data

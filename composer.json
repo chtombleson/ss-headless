@@ -1,0 +1,24 @@
+{
+  "name": "chtombleson/ss-headless",
+  "type": "silverstripe-module",
+  "description": "Useful extension / controllers.",
+  "homepage": "http://github.com/chtombleson/ss-headless",
+  "keywords": ["silverstripe"],
+  "license": "MIT",
+  "authors": [
+    {"name": "Chris Tombleson","email": "chris@cribznetwork.com"}
+  ],
+  "support": {
+    "issues": "http://github.com/chtombleson/ss-headless/issues"
+  },
+  "require": {
+    "silverstripe/cms": "^4",
+    "silverstripe/framework": "^4",
+    "ramsey/uuid": "~3.8"
+  },
+  "autoload": {
+    "psr-4": {
+        "Chtombleson\\SSHeadless\\": "src/"
+    }
+  }
+}
