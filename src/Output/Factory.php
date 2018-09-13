@@ -40,6 +40,11 @@ class Factory
         return $this->writer->remove($guid);
     }
 
+    public function getAbsoluteUrl(string $guid)
+    {
+        return $this->writer->getAbsoluteUrl($guid);
+    }
+
     public static function getInstance()
     {
         if (!self::$instance) {

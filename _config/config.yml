@@ -1,7 +1,7 @@
 ---
 Name: headlessconfig
 ---
-Chtombleson\SSHeadless\Extension\DataObject:
+Chtombleson\SSHeadless\Extension\StaticJson:
   default_json_fields:
     - column: ID
       key: id
@@ -18,4 +18,31 @@ Chtombleson\SSHeadless\Output\Factory:
   writer: Chtombleson\SSHeadless\Output\Writer\Filesystem
 
 Chtombleson\SSHeadless\Output\Writer\Filesystem:
-  output_dir: public/assets/data
+  output_dir: assets/data
+
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - Chtombleson\SSHeadless\Extension\StaticJson
+  json_fields:
+    - column: Title
+      key: title
+    - column: Content
+      key: content
+    - column: MenuTitle
+      key: menu_title
+    - column: URLSegment
+      key: url_segment
+    - column: MetaDescription
+      key: meta_description
+    - column: ExtraMeta
+      key: extra_meta
+    - column: ShowInMenus
+      key: show_in_menus
+    - column: ShowInSearch
+      key: show_in_search
+    - column: Sort
+      key: sort
+
+PageController:
+  extensions:
+    - Chtombleson\SSHeadless\Extension\PageController

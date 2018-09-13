@@ -8,15 +8,35 @@ use SilverStripe\ORM\DataExtension;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\View\Parsers\ShortcodeParser;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\FieldGroup;
+use SilverStripe\Forms\CheckboxField;
+
 use Chtombleson\SSHeadless\Output\Factory;
 
-class DataObject extends DataExtension implements \JsonSerializable
+class StaticJson extends DataExtension
 {
     use Configurable;
 
     private static $db = [
         'GUID' => 'Varchar(100)',
+        'DontStoreStaticJson' => 'Boolean',
     ];
+
+    public function updateCMSFields(FieldList $fields)
+    {
+        if ($this->owner instanceOf SiteTree) {
+            $fields->addFieldToTab(
+                'Root.Settings',
+                FieldGroup::create(
+                    CheckboxField::create('DontStoreStaticJson', 'Do not store static json')
+                )->setTitle('Static json publishing')
+            );
+        } else {
+
+        }
+    }
 
     public function onBeforeWrite()
     {
@@ -33,7 +53,14 @@ class DataObject extends DataExtension implements \JsonSerializable
     public function onAfterWrite()
     {
         parent::onAfterWrite();
-        Factory::getInstance()->write($this->owner->GUID, $this->owner->jsonSerialize());
+
+        if (!$this->owner->hasExtension(Versioned::class)) {
+            if (!$this->owner->DontStoreStaticJson) {
+                Factory::getInstance()->write($this->owner->GUID, $this->owner->JSON);
+            } else {
+                Factory::getInstance()->remove($this->owner->GUID);
+            }
+        }
     }
 
     public function onAfterDelete()
@@ -44,11 +71,16 @@ class DataObject extends DataExtension implements \JsonSerializable
 
     public function onAfterPublish()
     {
-        parent::onAfterPublish();
-        Factory::getInstance()->write($this->owner->GUID, $this->owner->jsonSerialize());
+        if (!$this->owner->DontStoreStaticJson) {
+            Factory::getInstance()->write($this->owner->GUID, $this->owner->JSON);
+        } else {
+            Factory::getInstance()->remove($this->owner->GUID);
+        }
+
+        $this->owner->onAfterPublish();
     }
 
-    public function jsonSerialize()
+    public function getJSON()
     {
         $jsonFields = $this->config()->get('default_json_fields');
         $extraJsonFields = Config::inst()->get($this->owner->ClassName, 'json_fields');
@@ -71,6 +103,17 @@ class DataObject extends DataExtension implements \JsonSerializable
 
                 case 'SilverStripe\ORM\FieldType\DBBoolean':
                     $data[$field['key']] = (bool) $this->owner->{$field['column']};
+                    break;
+
+                case 'SilverStripe\ORM\FieldType\DBBigInt':
+                case 'SilverStripe\ORM\FieldType\DBInt':
+                    $data[$field['key']] = (int) $this->owner->{$field['column']};
+                    break;
+
+                case 'SilverStripe\ORM\FieldType\DBDecimal':
+                case 'SilverStripe\ORM\FieldType\DBDouble':
+                case 'SilverStripe\ORM\FieldType\DBFloat':
+                    $data[$field['key']] = (float) $this->owner->{$field['column']};
                     break;
 
                 case 'SilverStripe\ORM\FieldType\DBHTMLText':

@@ -7,4 +7,6 @@ interface WriterInterface
     public function write(string $guid, array $json);
 
     public function remove(string $guid);
+
+    public function getAbsoluteUrl(string $guid);
 }
