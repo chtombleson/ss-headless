@@ -1,7 +1,7 @@
 ---
 Name: headlessconfig
 ---
-Chtombleson\SSHeadless\Extension\StaticJson:
+Chtombleson\SSHeadless\Extension\StaticJSON:
   default_json_fields:
     - column: ID
       key: id
@@ -20,9 +20,15 @@ Chtombleson\SSHeadless\Output\Factory:
 Chtombleson\SSHeadless\Output\Writer\Filesystem:
   output_dir: assets/data
 
+Chtombleson\SSHeadless\Output\Writer\S3:
+  region: null
+  key: null
+  secret: null
+  bucket: null
+
 SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - Chtombleson\SSHeadless\Extension\StaticJson
+    - Chtombleson\SSHeadless\Extension\StaticJSON
   json_fields:
     - column: Title
       key: title

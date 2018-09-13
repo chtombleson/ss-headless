@@ -14,7 +14,8 @@
   "require": {
     "silverstripe/cms": "^4",
     "silverstripe/framework": "^4",
-    "ramsey/uuid": "~3.8"
+    "ramsey/uuid": "~3.8",
+    "aws/aws-sdk-php": "^3.67"
   },
   "autoload": {
     "psr-4": {

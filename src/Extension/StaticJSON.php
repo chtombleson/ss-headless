@@ -15,7 +15,7 @@ use SilverStripe\Forms\CheckboxField;
 
 use Chtombleson\SSHeadless\Output\Factory;
 
-class StaticJson extends DataExtension
+class StaticJSON extends DataExtension
 {
     use Configurable;
 
@@ -34,7 +34,12 @@ class StaticJson extends DataExtension
                 )->setTitle('Static json publishing')
             );
         } else {
-
+            $fields->addFieldToTab(
+                'Root.Main',
+                FieldGroup::create(
+                    CheckboxField::create('DontStoreStaticJson', 'Do not store static json')
+                )->setTitle('Static json publishing')
+            );
         }
     }
 
